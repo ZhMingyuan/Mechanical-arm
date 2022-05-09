@@ -1,0 +1,36 @@
+.button {
+    -fx-text-fill: #000000;
+    -fx-background-color: #F3F3F3;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-border-color: #DADADA;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 2px;
+    -fx-font-weight: bold;
+    -fx-font-size: 9pt;
+    -fx-outline: none;
+}
+
+.button:hover {
+    -fx-border-width: 1px;
+    -fx-border-color: #C6C6C6;
+    -fx-border-style: solid;
+    -fx-effect: dropshadow(gaussian, #EAEAEA, 2, 2, 0, 0);
+    -fx-font-color: #333333;
+    -fx-background-color: #F7F7F7;
+}
+
+.button:pressed {
+    -fx-effect: dropshadow(gaussian, #DFDFDF, 3, 3, 0, 0);
+    -fx-background-color: #ffffff;
+}
+
+.body {
+    -fx-margin-length: 50px;
+}
+
+.h1 {
+    -fx-font-size: 150%/150%;
+    -fx-font-family: cursive;
+
+}
