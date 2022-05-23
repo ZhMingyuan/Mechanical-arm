@@ -15,7 +15,7 @@
             <children>
                 <AnchorPane fx:id="TopAnchorPane" prefHeight="120.0" prefWidth="200.0">
                     <children>
-                        <ImageView fx:id="Icon" fitHeight="60.0" fitWidth="60.0" layoutX="160.0" layoutY="30.0"
+                        <ImageView fx:id="Icon" fitHeight="60.0" fitWidth="60.0" layoutX="170.0" layoutY="30.0"
                                    pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@TamakiIroha.jpeg"/>
@@ -35,7 +35,8 @@
                                         <Font size="15.0"/>
                                     </font>
                                 </Label>
-                                <ChoiceBox fx:id="ModeChoice" prefWidth="120.0" onAction="#onModeChoice"
+                                <ChoiceBox fx:id="ModeChoice" value="Mode Choice" prefWidth="120.0"
+                                           onAction="#onModeChoice"
                                            stylesheets="@MainInterface.css">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">

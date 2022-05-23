@@ -1,9 +1,15 @@
 package prototype;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +36,25 @@ public class ParameterMenuController {
         try {
             String cmdDir[] = { "explorer.exe", directory.getCanonicalPath() };
             Runtime.getRuntime().exec(cmdDir);
+            Stage menuInterface = (Stage)MenuAnchorPane.getScene().getWindow();
+            menuInterface.close();
         } catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public void onParameterButton(ActionEvent actionEvent) throws IOException {
+        try {
+            Parent parameterInterfaceLoader = FXMLLoader.load(ParameterMenuController.class.getResource("parameter-interface.fxml"));
+            Stage parameterInterface = new Stage();
+            Stage menuInterface = (Stage)MenuAnchorPane.getScene().getWindow();
+            parameterInterface.setScene(new Scene(parameterInterfaceLoader));
+            parameterInterface.setOnShown(event -> {
+                menuInterface.close();
+            });
+            parameterInterface.show();
+        } catch (IOException ex){
+            ex.printStackTrace();
         }
     }
 }
