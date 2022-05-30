@@ -34,11 +34,11 @@ public class ParameterMenuController {
     public void onFileButton() {
         File directory = new File("");
         try {
-            String cmdDir[] = { "explorer.exe", directory.getCanonicalPath() };
+            String cmdDir[] = {"explorer.exe", directory.getCanonicalPath() + "\\resource"};
             Runtime.getRuntime().exec(cmdDir);
-            Stage menuInterface = (Stage)MenuAnchorPane.getScene().getWindow();
+            Stage menuInterface = (Stage) MenuAnchorPane.getScene().getWindow();
             menuInterface.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -47,13 +47,13 @@ public class ParameterMenuController {
         try {
             Parent parameterInterfaceLoader = FXMLLoader.load(ParameterMenuController.class.getResource("parameter-interface.fxml"));
             Stage parameterInterface = new Stage();
-            Stage menuInterface = (Stage)MenuAnchorPane.getScene().getWindow();
+            Stage menuInterface = (Stage) MenuAnchorPane.getScene().getWindow();
             parameterInterface.setScene(new Scene(parameterInterfaceLoader));
             parameterInterface.setOnShown(event -> {
                 menuInterface.close();
             });
             parameterInterface.show();
-        } catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
@@ -7,23 +11,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.lang.String?>
-<AnchorPane fx:id="MainAnchorPane" styleClass="background" stylesheets="@MainInterface.css"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="prototype.MainInterfaceController">
+
+<AnchorPane fx:id="MainAnchorPane" prefHeight="650.0" prefWidth="360.0" styleClass="background" stylesheets="@MainInterface.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prototype.MainInterfaceController">
     <children>
-        <VBox fx:id="MainVBox">
+        <VBox fx:id="MainVBox" prefHeight="650.0" prefWidth="380.0">
             <children>
                 <AnchorPane fx:id="TopAnchorPane" prefHeight="120.0" prefWidth="200.0">
                     <children>
-                        <ImageView fx:id="Icon" fitHeight="60.0" fitWidth="60.0" layoutX="160.0" layoutY="30.0"
-                                   pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="Icon" fitHeight="60.0" fitWidth="60.0" layoutX="160.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@TamakiIroha.jpeg"/>
+                                <Image url="@TamakiIroha.jpeg" />
                             </image>
                         </ImageView>
-                        <Button id="TopMenuButton" fx:id="TopMenuButton" mnemonicParsing="false"
-                                onAction="#onTopMenuButtonClick" prefHeight="25.0" prefWidth="60.0"
-                                stylesheets="@MainInterface.css" text="菜单"/>
+                        <Button id="TopMenuButton" fx:id="TopMenuButton" mnemonicParsing="false" onAction="#onTopMenuButtonClick" prefHeight="25.0" prefWidth="60.0" stylesheets="@MainInterface.css" text="菜单" />
                     </children>
                 </AnchorPane>
                 <AnchorPane fx:id="MiddleAnchorPane" prefHeight="120.0" prefWidth="200.0">
@@ -32,44 +32,53 @@
                             <children>
                                 <Label fx:id="ModeLabel" prefHeight="30.0" prefWidth="81.0" text="操作模式：">
                                     <font>
-                                        <Font size="15.0"/>
+                                        <Font size="15.0" />
                                     </font>
                                 </Label>
-                                <ChoiceBox fx:id="ModeChoice" prefWidth="120.0" onAction="#onModeChoice"
-                                           stylesheets="@MainInterface.css">
+                                <ChoiceBox fx:id="ModeChoice" onAction="#onModeChoice" prefWidth="120.0" stylesheets="@MainInterface.css">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
-                                            <String fx:value="自定义模式"/>
-                                            <String fx:value="手动模式"/>
+                                            <String fx:value="自定义模式" />
+                                            <String fx:value="手动模式" />
                                         </FXCollections>
                                     </items>
                                 </ChoiceBox>
                             </children>
                         </HBox>
-                        <HBox fx:id="ButtonHBox" layoutX="20.0" layoutY="60.0" prefHeight="60.0" prefWidth="360.0"
-                              spacing="45.0">
+                        <HBox fx:id="ButtonHBox" layoutX="20.0" layoutY="60.0" prefHeight="60.0" prefWidth="360.0" spacing="45.0">
                             <children>
-                                <Button fx:id="ButtonLaunch" mnemonicParsing="false" stylesheets="@MainInterface.css"
-                                        text="启动"/>
-                                <Button fx:id="ButtonStop" mnemonicParsing="false" stylesheets="@MainInterface.css"
-                                        text="暂停"/>
-                                <Button fx:id="ButtonTerminate" mnemonicParsing="false" stylesheets="@MainInterface.css"
-                                        text="终止"/>
-                                <Button fx:id="ButtonReset" mnemonicParsing="false" stylesheets="@MainInterface.css"
-                                        text="复位"/>
+                                <Button fx:id="ButtonLaunch" mnemonicParsing="false" stylesheets="@MainInterface.css" text="启动" />
+                                <Button fx:id="ButtonStop" mnemonicParsing="false" stylesheets="@MainInterface.css" text="暂停" />
+                                <Button fx:id="ButtonTerminate" mnemonicParsing="false" stylesheets="@MainInterface.css" text="终止" />
+                                <Button fx:id="ButtonReset" mnemonicParsing="false" stylesheets="@MainInterface.css" text="复位" />
                             </children>
                         </HBox>
                     </children>
                 </AnchorPane>
                 <AnchorPane fx:id="BottomAnchorPane" prefHeight="360.0" prefWidth="200.0">
                     <children>
-                        <ScrollPane fx:id="CustomScrollPane" layoutX="10.0" prefHeight="350.0" prefWidth="360.0">
+                        <ScrollPane fx:id="CustomScrollPane" layoutX="10.0" prefHeight="350.0" prefWidth="360.0" visible="false">
                             <content>
-                                <VBox fx:id="CustomVBox" prefHeight="400.0" prefWidth="340.0"/>
+                                <VBox fx:id="CustomVBox" prefHeight="400.0" prefWidth="340.0">
+                           <children>
+                              <Label fx:id="actionGroup1" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup2" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup3" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup4" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup5" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup6" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup7" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup8" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup9" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup10" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup11" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                              <Label fx:id="actionGroup12" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                           </children></VBox>
                             </content>
                         </ScrollPane>
                     </children>
                 </AnchorPane>
+            <HBox fx:id="customButtonHBox" prefHeight="60.0" prefWidth="200.0" />
             </children>
         </VBox>
     </children>

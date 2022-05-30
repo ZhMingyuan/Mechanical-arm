@@ -4,6 +4,7 @@ import arduino.Arduino;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,14 +23,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 
 public
 class MainInterfaceController {
+    @FXML
+    private HBox customButtonHBox;
 
     @FXML
     private AnchorPane TopAnchorPane;
@@ -44,13 +46,49 @@ class MainInterfaceController {
     private AnchorPane MainAnchorPane;
 
     @FXML
+    private Button ButtonLaunch;
+
+    @FXML
+    private Button ButtonReset;
+
+    @FXML
+    private ChoiceBox<String> ModeChoice;
+
+    @FXML
+    private ScrollPane CustomScrollPane;
+
+    @FXML
+    private HBox ButtonHBox;
+
+    @FXML
+    private Label actionGroup5;
+
+    @FXML
+    private Label actionGroup6;
+
+    @FXML
+    private Label actionGroup7;
+
+    @FXML
+    private Label actionGroup8;
+
+    @FXML
+    private Label actionGroup1;
+
+    @FXML
+    private Label actionGroup2;
+
+    @FXML
+    private Label actionGroup3;
+
+    @FXML
+    private Label actionGroup4;
+
+    @FXML
     private AnchorPane BottomAnchorPane;
 
     @FXML
     private Label ModeLabel;
-
-    @FXML
-    private Button ButtonLaunch;
 
     @FXML
     private Button TopMenuButton;
@@ -59,77 +97,38 @@ class MainInterfaceController {
     private VBox CustomVBox;
 
     @FXML
-    private Button ButtonReset;
-
-    @FXML
     private VBox MainVBox;
 
     @FXML
-    private ChoiceBox<String> ModeChoice;
+    private Label actionGroup10;
+
+    @FXML
+    private Label actionGroup11;
 
     @FXML
     private HBox ModeSelectionHBox;
 
     @FXML
-    private ScrollPane CustomScrollPane;
+    private Label actionGroup12;
 
     @FXML
     private ImageView Icon;
 
     @FXML
-    private Button ButtonTerminate;
+    private Label actionGroup9;
 
     @FXML
-    private HBox ButtonHBox;
+    private Button ButtonTerminate;
 
     final static Arduino arduino = new Arduino("COM5", 9600);
 
     // Launch   stop B terminate B reset R
-    public
-    void onButtonLaunchClick(ActionEvent actionEvent) throws IOException {//This is send a file to arduino
-        arduino.openConnection();
-
-        Platform.runLater(() -> {
-            File file = new File("E:\\CGT\\COMP 3060 3070\\test\\demoTwo", "test1.txt");
-            System.out.println(file);
-
-            int count = 0;
-            int sum = 0;
-
-            try {
-                FileReader fin = new FileReader(file);
-                Scanner src = new Scanner(fin);
-                // Read and sum numbers.
-                while (src.hasNext()) {
-                    if (src.hasNextDouble()) {
-                        sum += src.nextInt();
-                        count++;
-                    } else {
-                        String str = src.next();
-                        if (str.equals("done"))
-                            break;
-                        else {
-                            System.out.println("File format error.");
-                            return;
-                        }
-                    }
-                }
-                src.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            System.out.println(sum);
-
-        });
-
-        //  new Thread(() -> {}).start();
+    public void onButtonLaunchClick(ActionEvent actionEvent) throws IOException {//This is send a file to arduino
 
 
     }
 
-    public
-    void onButtonStopClick(ActionEvent actionEvent) {
+    public void onButtonStopClick(ActionEvent actionEvent) {
         if (arduino.openConnection() == true) {
             arduino.serialWrite("B");
         } else {
@@ -137,14 +136,12 @@ class MainInterfaceController {
         }
     }
 
-    public
-    void onButtonTerminateClick(ActionEvent actionEvent) {
+    public void onButtonTerminateClick(ActionEvent actionEvent) {
 
     }
 
-    public
-    void onButtonResetClick(ActionEvent actionEvent) {
-        if (arduino.openConnection() == true) {
+    public void onButtonResetClick(ActionEvent actionEvent) {
+        if (arduino.openConnection()) {
             arduino.serialWrite("R");
         } else {
             System.out.println("err");
@@ -152,8 +149,7 @@ class MainInterfaceController {
     }
 
 
-    public
-    void onTopMenuButtonClick() {
+    public void onTopMenuButtonClick() {
         try {
             Parent menuButtonLoader = FXMLLoader.load(getClass().getResource("parameter-menu.fxml"));
             Stage menuInterface = new Stage();
@@ -165,31 +161,121 @@ class MainInterfaceController {
     }
 
     //手动模式 自定义模式
-    public
-    void onModeChoice() {
+    public void onModeChoice() throws ExecutionException, InterruptedException {
         String str = ModeChoice.getValue();
         arduino.openConnection();
         KeyEventHandler keyEventHandler = new KeyEventHandler();
+
+        Task<String[]> getFileList = new Task<String[]>() {
+            @Override
+            protected String[] call() throws Exception {
+
+                File getDirectory = new File("");
+                String dir = null;
+                try {
+                    dir = String.format("%s\\resource", getDirectory.getCanonicalPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                File resource = new File(dir);
+                File[] getResourceList = resource.listFiles();//获取文件列表
+                String[] resourceList = new String[getResourceList.length];
+                System.out.println(getResourceList.length);
+
+                if (getResourceList != null && getResourceList.length < 13) {
+                    for (int i = 0; i < getResourceList.length; i++) {
+                        resourceList[i] = getResourceList[i].getName().replace(".txt", "");
+                    }
+                } else {
+                    for (int i = 0; i < 12; i++) {
+                        resourceList[i] = getResourceList[i].getName().replace(".txt", "");
+                    }
+                }
+                return resourceList;
+            }
+        };
+
+        Thread getFileListThread = new Thread(getFileList);
+
         if (str.compareTo("手动模式") == 0) {
-
-            Platform.runLater(() -> {
-                ModeChoice.addEventHandler(KeyEvent.ANY, keyEventHandler);
-            });
-
+            CustomScrollPane.visibleProperty().set(false);
+            ModeChoice.addEventHandler(KeyEvent.ANY, keyEventHandler);
         } else if (str.compareTo("自定义模式") == 0) {
             arduino.closeConnection();//启动功能打开串口连接
+            CustomScrollPane.visibleProperty().set(true);
+            getFileListThread.start();
+            String[] fileList = getFileList.get();
+
+            Platform.runLater(() -> {
+                for (int i = 0; i < fileList.length; i++) {
+                    switch (i) {
+                        case 0:
+                            actionGroup1.setText(fileList[i]);
+                            actionGroup1.visibleProperty().set(true);
+                            break;
+                        case 1:
+                            actionGroup2.setText(fileList[i]);
+                            actionGroup2.visibleProperty().set(true);
+                            break;
+                        case 2:
+                            actionGroup3.setText(fileList[i]);
+                            actionGroup3.visibleProperty().set(true);
+                            break;
+                        case 3:
+                            actionGroup4.setText(fileList[i]);
+                            actionGroup4.visibleProperty().set(true);
+                            break;
+                        case 4:
+                            actionGroup5.setText(fileList[i]);
+                            actionGroup5.visibleProperty().set(true);
+                            break;
+                        case 5:
+                            actionGroup6.setText(fileList[i]);
+                            actionGroup6.visibleProperty().set(true);
+                            break;
+                        case 6:
+                            actionGroup7.setText(fileList[i]);
+                            actionGroup7.visibleProperty().set(true);
+                            break;
+                        case 7:
+                            actionGroup8.setText(fileList[i]);
+                            actionGroup8.visibleProperty().set(true);
+                            break;
+                        case 8:
+                            actionGroup9.setText(fileList[i]);
+                            actionGroup9.visibleProperty().set(true);
+                            break;
+                        case 9:
+                            actionGroup10.setText(fileList[i]);
+                            actionGroup10.visibleProperty().set(true);
+                            break;
+                        case 10:
+                            actionGroup11.setText(fileList[i]);
+                            actionGroup11.visibleProperty().set(true);
+                            break;
+                        case 11:
+                            actionGroup12.setText(fileList[i]);
+                            actionGroup12.visibleProperty().set(true);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+
 
         }
+
         // 监听选择框！！改变！！
-        ModeChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            public
-            void changed(ObservableValue ov, Number value, Number new_value) {
-
-                ModeChoice.removeEventHandler(KeyEvent.ANY, keyEventHandler);
-                //模式改变
-            }
+        Platform.runLater(() -> {
+            ModeChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+                public void changed(ObservableValue ov, Number value, Number new_value) {
+                    ModeChoice.removeEventHandler(KeyEvent.ANY, keyEventHandler);
+                    //模式改变
+                }
+            });
         });
-
     }
 
     //键盘监听
@@ -197,20 +283,18 @@ class MainInterfaceController {
     class KeyEventHandler implements EventHandler<KeyEvent> {
         int lastKeyType = 0;//0释放 1按下 默认释放状态
 
-        public
-        KeyEventHandler() {
+        public KeyEventHandler() {
         }
 
         @Override
-        public
-        void handle(KeyEvent KeyEvent) {
+        public void handle(KeyEvent KeyEvent) {
             // 逻辑代码
             int key = KeyEvent.getCode().getCode();
             if (KeyEvent.getEventType() == javafx.scene.input.KeyEvent.KEY_PRESSED
                     && lastKeyType == 0) {//监听到键盘按下 且上一个为释放
                 new Thread(() -> {
                     SwitchKey(key);
-                },"Key").start();
+                }, "Key").start();
                 lastKeyType = 1;//保存当前键盘状态
             } else if (KeyEvent.getEventType() == javafx.scene.input.KeyEvent.KEY_RELEASED
                     && lastKeyType == 1) {//监听到键盘释放 且上一个为按下
@@ -218,14 +302,10 @@ class MainInterfaceController {
                 System.out.println("STOP");
                 arduino.serialWrite("B");//暂停功能的代码
                 lastKeyType = 0;//保存当前键盘状态
-
             }
-
-
         }
 
-        public
-        void SwitchKey(int key) {
+        public void SwitchKey(int key) {
             try {
                 switch (key) {
                     case 65://A
@@ -295,11 +375,8 @@ class MainInterfaceController {
             } catch (NullPointerException ex) {
                 ex.printStackTrace();
             }
-
         }
     }
-
-
 }
 
 

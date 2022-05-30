@@ -1,7 +1,6 @@
 package prototype;
 
 import arduino.Arduino;
-import com.fazecast.jSerialComm.SerialPort;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -20,7 +20,7 @@ public class Main extends Application {
 
     public void arduinoConnection() {
         new Thread(() -> {//新建arduino自检线程
-            //Arduino arduino = new Arduino("COM5", 9600);
+            Arduino arduino = new Arduino("COM3", 9600);
             if (true) {
                 //arduino.serialWrite("2000013000150008500800013500");
                 //String arduinoRead = arduino.serialRead();
@@ -28,7 +28,7 @@ public class Main extends Application {
                 if (arduinoRead.equals("SelfInspectionSucceed")) {//检测arduino自检是否完成
                     result.set(true);
                 }
-               // arduino.closeConnection();
+                arduino.closeConnection();
             }
             countDownLatch.countDown();
         }).start();
@@ -52,7 +52,8 @@ public class Main extends Application {
         });
 
         primaryStage.show();//设置启动页面
-        
+
+
         if (result.get()) {//判断自检是否完成
             Platform.runLater(() -> {//加载主界面
                 try {
@@ -61,8 +62,6 @@ public class Main extends Application {
                         Parent mainInterfaceLoader = FXMLLoader.load(Main.class.getResource("main-interface.fxml"));
                         Stage mainInterface = new Stage();
                         mainInterface.setScene(new Scene(mainInterfaceLoader));
-                        mainInterface.getIcons().add(new Image(Main.class.getResourceAsStream("TamakiIroha.ico")));
-                        mainInterface.setTitle("机械臂操作软件");
                         mainInterface.show();
                         primaryStage.close();
                     }
@@ -70,6 +69,8 @@ public class Main extends Application {
                     e.printStackTrace();
                 }
             });
+
+
         }
 
 
