@@ -17,15 +17,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
+import java.awt.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 
 public
@@ -120,13 +122,141 @@ class MainInterfaceController {
     @FXML
     private Button ButtonTerminate;
 
-    final static Arduino arduino = new Arduino("COM5", 9600);
+    @FXML
+    private Button ButtonChoose;
+
+    @FXML
+    private HBox CustomButtonHBox;
+
+    @FXML
+    private Button ButtonDelete;
+
+    private final static Arduino arduino = new Arduino("COM5", 9600);
+    private AtomicReferenceArray<String> arduinoFileList = new AtomicReferenceArray<String>(12);
 
     // Launch   stop B terminate B reset R
     public void onButtonLaunchClick(ActionEvent actionEvent) throws IOException {//This is send a file to arduino
+        arduino.openConnection();
+
+        Task<Void> launch = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+
+                boolean[] arduinoFileListUsed = new boolean[12];
+                int countArduinoFileListUsed = 0;
+                for (int i = 0; i < arduinoFileList.length(); i++) {
+                    if (arduinoFileList.get(i) != null) {
+                        arduinoFileListUsed[i] = true;
+                        countArduinoFileListUsed++;
+                    } else {
+                        continue;
+                        // arduinoFileListUsed[i] = false;
+                    }
+                }
+
+                for (int i = 0; i < 11; i++) {
+                    if (arduinoFileList.get(i) != null) {
+                        switch (arduinoFileList.get(i)) {
+                            case "01":
+                                actionGroup1.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "02":
+                                actionGroup2.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "03":
+                                actionGroup3.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "04":
+                                actionGroup4.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "05":
+                                actionGroup5.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "06":
+                                actionGroup6.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "07":
+                                actionGroup7.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "08":
+                                actionGroup8.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "09":
+                                actionGroup9.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "10":
+                                actionGroup10.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "11":
+                                actionGroup11.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            case "12":
+                                actionGroup12.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+
+                File getDirectory = new File("");
+                String dir = null;
+                try {
+                    dir = String.format("%s\\resource", getDirectory.getCanonicalPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                Object[] fileList = new Object[countArduinoFileListUsed];
+                StringBuffer stringBuffer = new StringBuffer();
+
+                for (int i = 0; i < arduinoFileList.length(); i++) {
+                    if (arduinoFileListUsed[i]) {
+                        int countFileList = 0;
+                        String tempString = arduinoFileList.get(i) + ".txt";
+                        arduinoFileList.set(i, null);
+                        File tempFile = new File(dir, tempString);
+                        fileList[countFileList] = tempFile;
+
+                        try {
+
+                            FileReader fileReader = new FileReader((File) fileList[countFileList]);
+                            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+                            while (true) {
+                                String str = bufferedReader.readLine();
+                                if (str.compareTo("done") != 0) {
+                                    stringBuffer.append(str);
+                                } else {
+                                    break;
+                                }
+                            }
+                            //fileReader.close();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        stringBuffer.append("\n");
+                        countFileList++;
+                    }
+
+                }
+                System.out.println(stringBuffer);
+
+
+                return null;
+            }
+        };
+
+        new Thread(launch).start();
 
 
     }
+
 
     public void onButtonStopClick(ActionEvent actionEvent) {
         if (arduino.openConnection() == true) {
@@ -165,6 +295,7 @@ class MainInterfaceController {
         String str = ModeChoice.getValue();
         arduino.openConnection();
         KeyEventHandler keyEventHandler = new KeyEventHandler();
+        AtomicReference<String> labelText = new AtomicReference<>("");
 
         Task<String[]> getFileList = new Task<String[]>() {
             @Override
@@ -181,7 +312,6 @@ class MainInterfaceController {
                 File resource = new File(dir);
                 File[] getResourceList = resource.listFiles();//获取文件列表
                 String[] resourceList = new String[getResourceList.length];
-                System.out.println(getResourceList.length);
 
                 if (getResourceList != null && getResourceList.length < 13) {
                     for (int i = 0; i < getResourceList.length; i++) {
@@ -200,10 +330,24 @@ class MainInterfaceController {
 
         if (str.compareTo("手动模式") == 0) {
             CustomScrollPane.visibleProperty().set(false);
+            ButtonLaunch.visibleProperty().set(false);
+            ButtonStop.visibleProperty().set(false);
+            ButtonTerminate.visibleProperty().set(false);
+            ButtonTerminate.visibleProperty().set(false);
+            ButtonReset.visibleProperty().set(false);
+            ButtonChoose.visibleProperty().set(false);
+            ButtonDelete.visibleProperty().set(false);
             ModeChoice.addEventHandler(KeyEvent.ANY, keyEventHandler);
         } else if (str.compareTo("自定义模式") == 0) {
             arduino.closeConnection();//启动功能打开串口连接
             CustomScrollPane.visibleProperty().set(true);
+            ButtonLaunch.visibleProperty().set(true);
+            ButtonStop.visibleProperty().set(true);
+            ButtonTerminate.visibleProperty().set(true);
+            ButtonTerminate.visibleProperty().set(true);
+            ButtonReset.visibleProperty().set(true);
+            ButtonChoose.visibleProperty().set(true);
+            ButtonDelete.visibleProperty().set(true);
             getFileListThread.start();
             String[] fileList = getFileList.get();
 
@@ -213,58 +357,105 @@ class MainInterfaceController {
                         case 0:
                             actionGroup1.setText(fileList[i]);
                             actionGroup1.visibleProperty().set(true);
+                            actionGroup1.setOnMouseClicked(event -> {
+                                actionGroup1.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(0, actionGroup1.getText());
+                            });
+
                             break;
                         case 1:
                             actionGroup2.setText(fileList[i]);
                             actionGroup2.visibleProperty().set(true);
+                            actionGroup2.setOnMouseClicked(event -> {
+                                actionGroup2.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(1, actionGroup2.getText());
+                            });
                             break;
                         case 2:
                             actionGroup3.setText(fileList[i]);
                             actionGroup3.visibleProperty().set(true);
+                            actionGroup3.setOnMouseClicked(event -> {
+                                actionGroup3.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(2, actionGroup3.getText());
+                            });
                             break;
                         case 3:
                             actionGroup4.setText(fileList[i]);
                             actionGroup4.visibleProperty().set(true);
+                            actionGroup4.setOnMouseClicked(event -> {
+                                actionGroup4.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(3, actionGroup4.getText());
+                            });
                             break;
                         case 4:
                             actionGroup5.setText(fileList[i]);
                             actionGroup5.visibleProperty().set(true);
+                            actionGroup5.setOnMouseClicked(event -> {
+                                actionGroup5.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(4, actionGroup5.getText());
+                            });
                             break;
                         case 5:
                             actionGroup6.setText(fileList[i]);
                             actionGroup6.visibleProperty().set(true);
+                            actionGroup6.setOnMouseClicked(event -> {
+                                actionGroup6.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(5, actionGroup6.getText());
+                            });
                             break;
                         case 6:
                             actionGroup7.setText(fileList[i]);
                             actionGroup7.visibleProperty().set(true);
+                            actionGroup7.setOnMouseClicked(event -> {
+                                actionGroup7.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(6, actionGroup7.getText());
+                            });
                             break;
                         case 7:
                             actionGroup8.setText(fileList[i]);
                             actionGroup8.visibleProperty().set(true);
+                            actionGroup8.setOnMouseClicked(event -> {
+                                actionGroup8.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(7, actionGroup8.getText());
+                            });
                             break;
                         case 8:
                             actionGroup9.setText(fileList[i]);
                             actionGroup9.visibleProperty().set(true);
+                            actionGroup9.setOnMouseClicked(event -> {
+                                actionGroup9.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(8, actionGroup9.getText());
+                            });
                             break;
                         case 9:
                             actionGroup10.setText(fileList[i]);
                             actionGroup10.visibleProperty().set(true);
+                            actionGroup10.setOnMouseClicked(event -> {
+                                actionGroup10.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(9, actionGroup10.getText());
+                            });
                             break;
                         case 10:
                             actionGroup11.setText(fileList[i]);
                             actionGroup11.visibleProperty().set(true);
+                            actionGroup11.setOnMouseClicked(event -> {
+                                actionGroup11.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(10, actionGroup11.getText());
+                            });
                             break;
                         case 11:
                             actionGroup12.setText(fileList[i]);
                             actionGroup12.visibleProperty().set(true);
+                            actionGroup12.setOnMouseClicked(event -> {
+                                actionGroup12.setBackground(new Background(new BackgroundFill(Paint.valueOf("#9999ef"), CornerRadii.EMPTY, null)));
+                                arduinoFileList.set(11, actionGroup12.getText());
+                            });
                             break;
                         default:
                             break;
                     }
                 }
             });
-
-
         }
 
         // 监听选择框！！改变！！
@@ -276,6 +467,89 @@ class MainInterfaceController {
                 }
             });
         });
+    }
+
+    public void onButtonChoose(ActionEvent actionEvent) {
+        Task<Void> change = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                String[] fileChosenList = new String[12];
+
+                File getDirectory = new File("");
+                String dir = null;
+                try {
+                    dir = String.format("%s\\resource", getDirectory.getCanonicalPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String finalDir = dir;
+
+                Platform.runLater(() -> {
+                    for (int i = 0; i < arduinoFileList.length(); i++) {
+                        fileChosenList[i] = arduinoFileList.get(i);
+                    }
+
+                    int listTime = fileChosenList.length;
+
+                    for (int i = 0; i < listTime; i++) {
+                        if (fileChosenList[i] != null) {
+
+                            try {
+                                Desktop.getDesktop().open(new File(finalDir + "\\" + fileChosenList[i] + ".txt"));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            switch (fileChosenList[i]) {
+                                case "01":
+                                    actionGroup1.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "02":
+                                    actionGroup2.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "03":
+                                    actionGroup3.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "04":
+                                    actionGroup4.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "05":
+                                    actionGroup5.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "06":
+                                    actionGroup6.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "07":
+                                    actionGroup7.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "08":
+                                    actionGroup8.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "09":
+                                    actionGroup9.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "10":
+                                    actionGroup10.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "11":
+                                    actionGroup11.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                case "12":
+                                    actionGroup12.setBackground(new Background(new BackgroundFill(Paint.valueOf("#f4f4f4"), CornerRadii.EMPTY, null)));
+                                    break;
+                                default:
+                                    break;
+                            }
+                            fileChosenList[i] = null;
+                            arduinoFileList.set(i, null);
+                        }
+                    }
+                });
+                return null;
+            }
+        };
+        new Thread(change).start();
     }
 
     //键盘监听

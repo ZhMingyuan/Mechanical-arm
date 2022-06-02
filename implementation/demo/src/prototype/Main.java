@@ -62,6 +62,8 @@ public class Main extends Application {
                         Parent mainInterfaceLoader = FXMLLoader.load(Main.class.getResource("main-interface.fxml"));
                         Stage mainInterface = new Stage();
                         mainInterface.setScene(new Scene(mainInterfaceLoader));
+                        mainInterface.setTitle("机械臂操作软件");
+                        mainInterface.getIcons().add(new Image(Main.class.getResourceAsStream("TamakiIroha.ico")));
                         mainInterface.show();
                         primaryStage.close();
                     }

@@ -47,10 +47,10 @@
                         </HBox>
                         <HBox fx:id="ButtonHBox" layoutX="20.0" layoutY="60.0" prefHeight="60.0" prefWidth="360.0" spacing="45.0">
                             <children>
-                                <Button fx:id="ButtonLaunch" mnemonicParsing="false" stylesheets="@MainInterface.css" text="启动" />
-                                <Button fx:id="ButtonStop" mnemonicParsing="false" stylesheets="@MainInterface.css" text="暂停" />
-                                <Button fx:id="ButtonTerminate" mnemonicParsing="false" stylesheets="@MainInterface.css" text="终止" />
-                                <Button fx:id="ButtonReset" mnemonicParsing="false" stylesheets="@MainInterface.css" text="复位" />
+                                <Button fx:id="ButtonLaunch" mnemonicParsing="false" onAction="#onButtonLaunchClick" stylesheets="@MainInterface.css" text="启动" visible="false" />
+                                <Button fx:id="ButtonStop" mnemonicParsing="false" stylesheets="@MainInterface.css" text="暂停" visible="false" />
+                                <Button fx:id="ButtonTerminate" mnemonicParsing="false" stylesheets="@MainInterface.css" text="终止" visible="false" />
+                                <Button fx:id="ButtonReset" mnemonicParsing="false" stylesheets="@MainInterface.css" text="复位" visible="false" />
                             </children>
                         </HBox>
                     </children>
@@ -60,25 +60,31 @@
                         <ScrollPane fx:id="CustomScrollPane" layoutX="10.0" prefHeight="350.0" prefWidth="360.0" visible="false">
                             <content>
                                 <VBox fx:id="CustomVBox" prefHeight="400.0" prefWidth="340.0">
-                           <children>
-                              <Label fx:id="actionGroup1" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup2" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup3" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup4" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup5" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup6" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup7" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup8" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup9" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup10" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup11" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                              <Label fx:id="actionGroup12" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
-                           </children></VBox>
+                                    <children>
+                                        <Label fx:id="actionGroup1" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup2" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup3" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup4" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup5" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup6" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup7" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup8" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup9" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup10" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup11" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                        <Label fx:id="actionGroup12" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="340.0" visible="false" />
+                                    </children>
+                                </VBox>
                             </content>
                         </ScrollPane>
                     </children>
                 </AnchorPane>
-            <HBox fx:id="customButtonHBox" prefHeight="60.0" prefWidth="200.0" />
+                <HBox fx:id="CustomButtonHBox" alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="ButtonChoose" mnemonicParsing="false" onAction="#onButtonChoose" text="修改" visible="false" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <Button fx:id="ButtonDelete" mnemonicParsing="false" stylesheets="@MainInterface.css" text="删除" visible="false" />
+               </children></HBox>
             </children>
         </VBox>
     </children>
