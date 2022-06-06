@@ -47,8 +47,8 @@
                         </HBox>
                         <HBox fx:id="ButtonHBox" layoutX="20.0" layoutY="60.0" prefHeight="60.0" prefWidth="360.0" spacing="45.0">
                             <children>
-                                <Button fx:id="ButtonLaunch" mnemonicParsing="false" onAction="#onButtonLaunchClick" stylesheets="@MainInterface.css" text="启动" visible="false" />
-                                <Button fx:id="ButtonStop" mnemonicParsing="false" stylesheets="@MainInterface.css" text="暂停" visible="false" />
+                                <Button fx:id="ButtonLoad" mnemonicParsing="false" onAction="#onButtonLoadClick" stylesheets="@MainInterface.css" text="加载" visible="false" />
+                                <Button fx:id="ButtonLaunch" mnemonicParsing="false" stylesheets="@MainInterface.css" text="启动" visible="false" />
                                 <Button fx:id="ButtonTerminate" mnemonicParsing="false" stylesheets="@MainInterface.css" text="终止" visible="false" />
                                 <Button fx:id="ButtonReset" mnemonicParsing="false" stylesheets="@MainInterface.css" text="复位" visible="false" />
                             </children>
@@ -83,7 +83,7 @@
                <children>
                   <Button fx:id="ButtonChoose" mnemonicParsing="false" onAction="#onButtonChoose" text="修改" visible="false" />
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                  <Button fx:id="ButtonDelete" mnemonicParsing="false" stylesheets="@MainInterface.css" text="删除" visible="false" />
+                  <Button fx:id="ButtonDelete" mnemonicParsing="false" onAction="#onButtonDeleteClick" stylesheets="@MainInterface.css" text="删除" visible="false" />
                </children></HBox>
             </children>
         </VBox>
