@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="LaunchPageAnchorPane" prefHeight="200.0" prefWidth="300.0" styleClass="background" stylesheets="@MainInterface.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prototype.LaunchPageController">
+    <children>
+        <ImageView fx:id="Icon" fitHeight="100.0" fitWidth="100.0" layoutX="100.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@机械设备.png" />
+            </image>
+        </ImageView>
+        <Label fx:id="LaunchLabel" layoutY="180.0" prefHeight="20.0" prefWidth="90.0" text="软件启动中..." />
+    </children>
+</AnchorPane>
