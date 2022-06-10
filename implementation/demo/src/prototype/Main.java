@@ -20,7 +20,7 @@ public class Main extends Application {
 
     public void arduinoConnection() {
         new Thread(() -> {//新建arduino自检线程
-            Arduino arduino = new Arduino("COM4", 9600);
+            Arduino arduino = new Arduino("COM3", 9600);
             if (true) {
                 //arduino.serialWrite("2000013000150008500800013500");
                 //String arduinoRead = arduino.serialRead();
@@ -40,7 +40,7 @@ public class Main extends Application {
 
         Parent launchPage = FXMLLoader.load(getClass().getResource("LaunchPage.fxml"));
         primaryStage.setScene(new Scene(launchPage));
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("TamakiIroha.ico")));
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("机械设备.png")));
         primaryStage.setTitle("机械臂操作软件");
         primaryStage.setOnShowing(event -> {//设置自检线程启动事件
             arduinoConnection();
@@ -63,7 +63,7 @@ public class Main extends Application {
                         Stage mainInterface = new Stage();
                         mainInterface.setScene(new Scene(mainInterfaceLoader));
                         mainInterface.setTitle("机械臂操作软件");
-                        mainInterface.getIcons().add(new Image(Main.class.getResourceAsStream("TamakiIroha.ico")));
+                        mainInterface.getIcons().add(new Image(Main.class.getResourceAsStream("机械设备.png")));
                         mainInterface.show();
                         primaryStage.close();
                     }
